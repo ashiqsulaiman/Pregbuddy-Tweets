@@ -69,10 +69,13 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let selectedTweet = self.response?[indexPath.row] else { return }
         if selectedCells.contains(indexPath.row) {
             self.selectedCells.remove(at: self.selectedCells.index(of: indexPath.row)!)
+            Tweet.saveTweet(from: selectedTweet)            
         }else{
             self.selectedCells.append(indexPath.row)
+            Tweet.saveTweet(from: selectedTweet)
         }
         tweetTableView.reloadData()
         

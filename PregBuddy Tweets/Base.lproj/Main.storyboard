@@ -107,6 +107,9 @@
                                                 <constraint firstItem="Nb0-ih-ybJ" firstAttribute="leading" secondItem="VXw-IF-SX3" secondAttribute="leading" constant="5" id="wZ5-Sy-duX"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="tweetLabel" destination="Nb0-ih-ybJ" id="jIw-mC-EOm"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

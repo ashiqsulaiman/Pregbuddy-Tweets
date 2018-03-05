@@ -29,7 +29,7 @@ class TweetCell: UITableViewCell {
     
     
     func loadDataFromCoreData(tweetObject: Tweet){
-        tweetLabel.text = tweetObject.tweet
+        tweetLabel.text = tweetObject.tweet!
     }
     
     
