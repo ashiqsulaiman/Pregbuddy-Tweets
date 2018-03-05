@@ -48,6 +48,18 @@ class BookmarkViewController: UIViewController {
         }
     }
     
+    func deleteTweetWith(id: String){
+        Tweet.deleteTweetWith(id: id, completionHandler: { (didDelete) in
+            if didDelete {
+                DispatchQueue.main.async {
+                    self.fetchSavedTweets()
+                    self.bookmarkTableView.reloadData()
+                }
+            }
+            
+        })
+    }
+    
 }
 
 extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
@@ -64,5 +76,12 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
         let bookmarkedTweetObjectAtIndex = tweetFetchedResultsController.fetchedObjects![indexPath.item]
         bookmarkCell.loadDataFromCoreData(tweetObject: bookmarkedTweetObjectAtIndex)
         return bookmarkCell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let tweetId = tweetFetchedResultsController.fetchedObjects![indexPath.row].id!
+            self.deleteTweetWith(id: tweetId)
+        }
     }
 }
