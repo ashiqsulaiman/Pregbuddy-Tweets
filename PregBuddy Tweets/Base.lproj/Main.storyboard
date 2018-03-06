@@ -66,6 +66,9 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Tweets" image="tweet" id="S6z-hr-caM"/>
                     <navigationItem key="navigationItem" id="5DO-om-otC"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="tweetView"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="tweetTableView" destination="yEp-DO-cuT" id="1Ak-C7-JPy"/>
                     </connections>
@@ -124,6 +127,9 @@
                         <viewLayoutGuide key="safeArea" id="MJt-tc-FcF"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Bookmarks" image="bookmark" id="3Mp-lL-uEj"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="bookmarkView"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="bookmarkTableView" destination="dgU-e1-WqR" id="X2Q-XA-0Jh"/>
                     </connections>
@@ -167,6 +173,9 @@
                         <color key="tintColor" red="0.89019607840000003" green="0.36862745099999999" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="selectedImageTintColor" red="0.89019607840000003" green="0.36862745099999999" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBar>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="tabBarController"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="Le9-vz-UBb"/>
                         <segue destination="TkT-WH-HeT" kind="relationship" relationship="viewControllers" id="IQ3-UR-O3x"/>
