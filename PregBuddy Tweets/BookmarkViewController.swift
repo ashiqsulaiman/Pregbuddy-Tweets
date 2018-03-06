@@ -13,14 +13,7 @@ import CoreData
 class BookmarkViewController: UIViewController {
 
     @IBOutlet weak var bookmarkTableView: UITableView!
-    
-    lazy var tweetFetchedResultsController: NSFetchedResultsController = { () -> NSFetchedResultsController<Tweet> in
-        let fetchRequest = NSFetchRequest<Tweet>(entityName: "Tweet")
-        let sortDescriptor = NSSortDescriptor(key: "likesCount", ascending: false)
-        fetchRequest.sortDescriptors = []
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.sharedInstance.mainQueueContext, sectionNameKeyPath: nil, cacheName: "tweetCache")
-        return fetchedResultsController
-    }()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +24,7 @@ class BookmarkViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.navigationItem.title = "Bookmarks"
-        fetchSavedTweets()
+        fetchBookmarkedTweets()
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,9 +32,11 @@ class BookmarkViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func fetchSavedTweets(){
+    func fetchBookmarkedTweets(){
+        TweetDataProvider.sharedInstance.clearCache()
+        TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchRequest.predicate = Tweet.getAllBookmarkedTweetsPredicate()
         do {
-            try tweetFetchedResultsController.performFetch()
+            try TweetDataProvider.sharedInstance.tweetFetchedResultsController.performFetch()
             self.bookmarkTableView.reloadData()
         } catch  {
             print("failed to fetch saved Tweets")
@@ -52,7 +47,7 @@ class BookmarkViewController: UIViewController {
         Tweet.deleteTweetWith(id: id, completionHandler: { (didDelete) in
             if didDelete {
                 DispatchQueue.main.async {
-                    self.fetchSavedTweets()
+                    self.fetchBookmarkedTweets()
                     self.bookmarkTableView.reloadData()
                 }
             }
@@ -68,19 +63,19 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (tweetFetchedResultsController.fetchedObjects?.count)!
+        return (TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchedObjects?.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let bookmarkCell = tableView.dequeueReusableCell(withIdentifier: "bookmarkCell") as! TweetCell
-        let bookmarkedTweetObjectAtIndex = tweetFetchedResultsController.fetchedObjects![indexPath.item]
+        let bookmarkedTweetObjectAtIndex = TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchedObjects![indexPath.item]
         bookmarkCell.loadDataFromCoreData(tweetObject: bookmarkedTweetObjectAtIndex)
         return bookmarkCell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let tweetId = tweetFetchedResultsController.fetchedObjects![indexPath.row].id!
+            let tweetId = TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchedObjects![indexPath.row].id!
             self.deleteTweetWith(id: tweetId)
         }
     }

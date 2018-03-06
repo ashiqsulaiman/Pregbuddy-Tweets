@@ -13,22 +13,20 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var tweetTableView: UITableView!
     let network = Network()
-    var selectedCells:[Int] = []
-    var response: JSON? {
-        didSet{
-            self.tweetTableView.reloadData()
-        }
-    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tweetTableView.delegate = self
         tweetTableView.dataSource = self
         tweetTableView.rowHeight = 100.0
-        fetchTweets()
+        Tweet.deleteAllTweets()
+        fetchTweetsFromNetwork()
+        addFilterNavigationBarButtonItem()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.navigationItem.title = "Tweets"
+        fetchTweetsFromCoreData(sortDescriptor: Tweet.defaultSortDescriptor(), limit: 100)
     }
     
     
@@ -37,49 +35,102 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func fetchTweets(){
+    func fetchTweetsFromNetwork(){
         network.searchTweet { (data) in
-            guard let responseData = data else {
-                print("failed to convert data to JSON")
-                return
-            }
-            let jsonResponse = JSON(responseData)
-            self.response = jsonResponse["statuses"]
+            guard let responseData = data else { return }
+            let responseJSON = JSON(responseData)
+            Tweet.saveTweet(from: responseJSON, completionHnadler: { (didSaveTweets) in
+                if didSaveTweets {
+                    self.fetchTweetsFromCoreData(sortDescriptor: Tweet.defaultSortDescriptor(), limit: 100)
+                }
+            })
         }
     }
+    
 
+    
 }
 
+
+//:MARK Tweet list table view
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let numberOfRows = response?.count else { return 1}
+        
+        let rows = TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchedObjects?.count
+        guard let numberOfRows = rows else { return 1}
         return numberOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tweetCell = tableView.dequeueReusableCell(withIdentifier: "tweetCell") as! TweetCell
-        guard let response = self.response else {return UITableViewCell()}
-        tweetCell.loadDataFrom(json: response, index: indexPath.item)
-        tweetCell.accessoryType = self.selectedCells.contains(indexPath.row) ? .checkmark : .none
+        guard let tweetObjectAtIndex = TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchedObjects?[indexPath.item] else {
+            return UITableViewCell()
+        }
+        tweetCell.loadDataFromCoreData(tweetObject: tweetObjectAtIndex)
+        
+        
         return tweetCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let selectedTweet = self.response?[indexPath.row] else { return }
-        if selectedCells.contains(indexPath.row) {
-            self.selectedCells.remove(at: self.selectedCells.index(of: indexPath.row)!)
-            Tweet.saveTweet(from: selectedTweet)            
-        }else{
-            self.selectedCells.append(indexPath.row)
-            Tweet.saveTweet(from: selectedTweet)
+        let selectedTweet = TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchedObjects?[indexPath.item]
+        Tweet.bookmarkTweet(with: (selectedTweet?.id)!) { (didBookmark) in
+            if didBookmark {
+                tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+            }else{
+                tableView.cellForRow(at: indexPath)?.accessoryType = .none
+            }
         }
-        tweetTableView.reloadData()
+        
+    }
+}
+
+//: MARK Filter view
+
+extension ViewController {
+    func addFilterNavigationBarButtonItem(){
+        let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(ViewController.tappedOnFilter))
+        filterButton.tintColor = UIColor.white
+        self.tabBarController?.navigationItem.rightBarButtonItem = filterButton
     }
     
+    @objc func tappedOnFilter(){
+        let actionSheetController: UIAlertController = UIAlertController(title: "Filter by", message: nil, preferredStyle: .actionSheet)
+        let showLiked: UIAlertAction = UIAlertAction(title: "Most Liked", style: .default) { action -> Void in
+            self.fetchTweetsFromCoreData(sortDescriptor: Tweet.mostLikedSortDescriptor(), limit: 10)
+        }
+        
+        let showRetweeted: UIAlertAction = UIAlertAction(title: "Most Retweeted", style: .default) { action -> Void in
+            self.fetchTweetsFromCoreData(sortDescriptor: Tweet.mostLikedSortDescriptor(), limit: 10)
+        }
+        
+        let showDefault: UIAlertAction = UIAlertAction(title: "Default", style: .default) { action -> Void in
+            self.fetchTweetsFromCoreData(sortDescriptor: Tweet.defaultSortDescriptor(), limit: 100)
+        }
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
+        
+        actionSheetController.addAction(showLiked)
+        actionSheetController.addAction(showRetweeted)
+        actionSheetController.addAction(showDefault)
+        actionSheetController.addAction(cancelAction)
+        present(actionSheetController, animated: true, completion: nil)
 
+    }
     
+    func fetchTweetsFromCoreData(sortDescriptor: NSSortDescriptor, limit: Int){
+        TweetDataProvider.sharedInstance.clearCache()
+        TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchRequest.sortDescriptors = [sortDescriptor]
+        TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchRequest.fetchLimit = limit
+        TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchRequest.predicate = Tweet.getAllTweetsPredicate()
+        do {
+            try TweetDataProvider.sharedInstance.tweetFetchedResultsController.performFetch()
+        } catch {
+            print("failed to fetch")
+        }
+        self.tweetTableView.reloadData()
+    }
 }

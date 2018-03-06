@@ -30,7 +30,14 @@ class TweetCell: UITableViewCell {
     
     func loadDataFromCoreData(tweetObject: Tweet){
         tweetLabel.text = tweetObject.tweet!
+        if tweetObject.isBookmarked {
+            self.accessoryType = .checkmark
+        }else {
+            self.accessoryType = .none
+        }
     }
+    
+    
     
     
 }
