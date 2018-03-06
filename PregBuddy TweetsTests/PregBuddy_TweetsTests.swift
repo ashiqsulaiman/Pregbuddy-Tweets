@@ -7,10 +7,14 @@
 //
 
 import XCTest
+import Alamofire
+import SwiftyJSON
+import UIKit
+
 @testable import PregBuddy_Tweets
 
 class PregBuddy_TweetsTests: XCTestCase {
-    
+    let network = Network()
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -31,6 +35,17 @@ class PregBuddy_TweetsTests: XCTestCase {
         self.measure {
             // Put the code you want to measure the time of here.
         }
+    }
+    
+    //Test if the response returnned is nil
+    func testServerResponse(){
+        let expectationForAsync = expectation(description: "fetches the tweets from the backend and runs the closure")
+        network.searchTweet { (responseData) in
+            guard let data = responseData else {return}
+            XCTAssertNotNil(data)
+            expectationForAsync.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
     }
     
 }
