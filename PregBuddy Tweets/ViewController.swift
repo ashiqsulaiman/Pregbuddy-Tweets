@@ -21,11 +21,10 @@ class ViewController: UIViewController {
         tweetTableView.rowHeight = 100.0
         Tweet.deleteAllTweets()
         fetchTweetsFromNetwork()
-        addFilterNavigationBarButtonItem()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.navigationItem.title = "Tweets"
+        setupNavigationBar()
         fetchTweetsFromCoreData(sortDescriptor: Tweet.defaultSortDescriptor(), limit: 100)
     }
     
@@ -47,7 +46,10 @@ class ViewController: UIViewController {
         }
     }
     
-
+    func setupNavigationBar(){
+        self.tabBarController?.navigationItem.title = "Tweets"
+        addFilterNavigationBarButtonItem()
+    }
     
 }
 

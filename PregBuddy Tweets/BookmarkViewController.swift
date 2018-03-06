@@ -23,13 +23,18 @@ class BookmarkViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.navigationItem.title = "Bookmarks"
+        setupNavigationBar()
         fetchBookmarkedTweets()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupNavigationBar(){
+        self.tabBarController?.navigationItem.title = "Bookmarks"
+        self.tabBarController?.navigationItem.rightBarButtonItem = nil
     }
     
     func fetchBookmarkedTweets(){
