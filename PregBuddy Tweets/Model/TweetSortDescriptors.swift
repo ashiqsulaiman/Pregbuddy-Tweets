@@ -18,7 +18,7 @@ extension Tweet {
     }
     
     public static func defaultSortDescriptor() -> NSSortDescriptor {
-        return NSSortDescriptor(key: "tweet", ascending: false)
+        return NSSortDescriptor(key: "isBookmarked", ascending: true)
     }
     
 }
