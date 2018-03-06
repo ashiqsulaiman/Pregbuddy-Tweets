@@ -27,18 +27,4 @@ extension Tweet {
     }
 }
 
-extension Tweet {
-    
-    public static func mostLikedSortDescriptor() -> NSSortDescriptor {
-        return NSSortDescriptor(key: "likesCount", ascending: false)
-    }
-    
-    public static func mostRetweetedSortDescriptor() -> NSSortDescriptor {
-        return NSSortDescriptor(key: "retweetCount", ascending: false)
-    }
-    
-    public static func defaultSortDescriptor() -> NSSortDescriptor {
-        return NSSortDescriptor(key: "tweet", ascending: false)
-    }
-    
-}
+

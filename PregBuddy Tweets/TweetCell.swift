@@ -23,11 +23,6 @@ class TweetCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func loadDataFrom(json: JSON, index: Int){
-        tweetLabel.text = json[index]["text"].stringValue
-    }
-    
-    
     func loadDataFromCoreData(tweetObject: Tweet){
         tweetLabel.text = tweetObject.tweet!
         if tweetObject.isBookmarked {
@@ -36,8 +31,6 @@ class TweetCell: UITableViewCell {
             self.accessoryType = .none
         }
     }
-    
-    
     
     
 }

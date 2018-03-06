@@ -25,6 +25,8 @@
 		5B197171204DEE2C0068392F /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B197170204DEE2C0068392F /* NetworkReachability.swift */; };
 		5B197176204E5D230068392F /* TweetDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B197175204E5D230068392F /* TweetDataProvider.swift */; };
 		5B197178204E66C20068392F /* TweetPredicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B197177204E66C20068392F /* TweetPredicates.swift */; };
+		5BCBEF7A204EAA8500533D9C /* TweetSortDescriptors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCBEF79204EAA8500533D9C /* TweetSortDescriptors.swift */; };
+		5BCBEF7C204EAAC000533D9C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCBEF7B204EAAC000533D9C /* Utilities.swift */; };
 		697BD50069BD67A281C66605 /* Pods_PregBuddy_Tweets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D122CB664987FBCD5C83505 /* Pods_PregBuddy_Tweets.framework */; };
 		ECED0145EB6698F0B683BAD2 /* Pods_PregBuddy_TweetsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42446C188CE06B4DB87812A /* Pods_PregBuddy_TweetsTests.framework */; };
 /* End PBXBuildFile section */
@@ -72,6 +74,8 @@
 		5B197170204DEE2C0068392F /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 		5B197175204E5D230068392F /* TweetDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetDataProvider.swift; sourceTree = "<group>"; };
 		5B197177204E66C20068392F /* TweetPredicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetPredicates.swift; sourceTree = "<group>"; };
+		5BCBEF79204EAA8500533D9C /* TweetSortDescriptors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetSortDescriptors.swift; sourceTree = "<group>"; };
+		5BCBEF7B204EAAC000533D9C /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		702EBA55592D12169ED68101 /* Pods-PregBuddy Tweets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PregBuddy Tweets.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PregBuddy Tweets/Pods-PregBuddy Tweets.debug.xcconfig"; sourceTree = "<group>"; };
 		7D122CB664987FBCD5C83505 /* Pods_PregBuddy_Tweets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PregBuddy_Tweets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C9FE7128EAED93BF4E893E2 /* Pods-PregBuddy TweetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PregBuddy TweetsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PregBuddy TweetsTests/Pods-PregBuddy TweetsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 				5B197163204DD5410068392F /* TweetCell.swift */,
 				5B197169204DD8090068392F /* Model */,
 				5B197172204DEE320068392F /* Network */,
+				5BCBEF7B204EAAC000533D9C /* Utilities.swift */,
 			);
 			path = "PregBuddy Tweets";
 			sourceTree = "<group>";
@@ -198,6 +203,7 @@
 				5B19716C204DEA400068392F /* CoredataStack.swift */,
 				5B197175204E5D230068392F /* TweetDataProvider.swift */,
 				5B197177204E66C20068392F /* TweetPredicates.swift */,
+				5BCBEF79204EAA8500533D9C /* TweetSortDescriptors.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -377,11 +383,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-PregBuddy Tweets/Pods-PregBuddy Tweets-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/Toaster/Toaster.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toaster.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -397,11 +405,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-PregBuddy TweetsUITests/Pods-PregBuddy TweetsUITests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/Toaster/Toaster.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toaster.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -483,11 +493,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-PregBuddy TweetsTests/Pods-PregBuddy TweetsTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/Toaster/Toaster.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toaster.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -518,9 +530,11 @@
 			files = (
 				5B197162204DD1C90068392F /* BookmarkViewController.swift in Sources */,
 				5B197178204E66C20068392F /* TweetPredicates.swift in Sources */,
+				5BCBEF7C204EAAC000533D9C /* Utilities.swift in Sources */,
 				5B197139204DCDF20068392F /* PregBuddy_Tweets.xcdatamodeld in Sources */,
 				5B19716B204DD9C30068392F /* Network.swift in Sources */,
 				5B197164204DD5410068392F /* TweetCell.swift in Sources */,
+				5BCBEF7A204EAA8500533D9C /* TweetSortDescriptors.swift in Sources */,
 				5B197133204DCDF20068392F /* ViewController.swift in Sources */,
 				5B197176204E5D230068392F /* TweetDataProvider.swift in Sources */,
 				5B197168204DD8030068392F /* Tweet + CoreDataProperties.swift in Sources */,

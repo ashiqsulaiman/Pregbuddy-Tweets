@@ -35,6 +35,9 @@ class ViewController: UIViewController {
     }
 
     func fetchTweetsFromNetwork(){
+        if !Reachability.isInternetAvailable(){
+            Utilities.showNeworkError()
+        }
         network.searchTweet { (data) in
             guard let responseData = data else { return }
             let responseJSON = JSON(responseData)
@@ -83,16 +86,17 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         Tweet.bookmarkTweet(with: (selectedTweet?.id)!) { (didBookmark) in
             if didBookmark {
                 tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                Utilities.showInfoMessage("Bookmarked tweet")
             }else{
                 tableView.cellForRow(at: indexPath)?.accessoryType = .none
+                Utilities.showInfoMessage("Removed bookmark")
             }
         }
         
     }
 }
 
-//: MARK Filter view
-
+//: MARK Filter Alert
 extension ViewController {
     func addFilterNavigationBarButtonItem(){
         let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(ViewController.tappedOnFilter))
@@ -104,14 +108,17 @@ extension ViewController {
         let actionSheetController: UIAlertController = UIAlertController(title: "Filter by", message: nil, preferredStyle: .actionSheet)
         let showLiked: UIAlertAction = UIAlertAction(title: "Most Liked", style: .default) { action -> Void in
             self.fetchTweetsFromCoreData(sortDescriptor: Tweet.mostLikedSortDescriptor(), limit: 10)
+            Utilities.showInfoMessage("Most liked tweets")
         }
         
         let showRetweeted: UIAlertAction = UIAlertAction(title: "Most Retweeted", style: .default) { action -> Void in
             self.fetchTweetsFromCoreData(sortDescriptor: Tweet.mostLikedSortDescriptor(), limit: 10)
+            Utilities.showInfoMessage("Most Retweeted tweets")
         }
         
         let showDefault: UIAlertAction = UIAlertAction(title: "Default", style: .default) { action -> Void in
             self.fetchTweetsFromCoreData(sortDescriptor: Tweet.defaultSortDescriptor(), limit: 100)
+            Utilities.showInfoMessage("All tweets")
         }
         let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
         

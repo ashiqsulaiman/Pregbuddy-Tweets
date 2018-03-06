@@ -62,6 +62,8 @@ class BookmarkViewController: UIViewController {
     
 }
 
+
+//: MARK Bookmarks table view
 extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -82,6 +84,7 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             let tweetId = TweetDataProvider.sharedInstance.tweetFetchedResultsController.fetchedObjects![indexPath.row].id!
             self.deleteTweetWith(id: tweetId)
+            Utilities.showInfoMessage("Removed bookmark")
         }
     }
 }

@@ -6,18 +6,21 @@ target 'PregBuddy Tweets' do
   use_frameworks!
   pod 'Alamofire'
   pod 'SwiftyJSON'
+  pod 'Toaster'
   # Pods for PregBuddy Tweets
 
   target 'PregBuddy TweetsTests' do
     inherit! :search_paths
 pod 'Alamofire'
 pod 'SwiftyJSON'
+pod 'Toaster'
   end
 
   target 'PregBuddy TweetsUITests' do
     inherit! :search_paths
 pod 'Alamofire'
 pod 'SwiftyJSON'
+pod 'Toaster'
   end
 
 end
